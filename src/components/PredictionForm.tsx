@@ -197,7 +197,6 @@ export function PredictionForm({ selectedGuest, onGuestChange }: PredictionFormP
           <p className="text-xs text-white/70 mb-2">{BONUS_QUESTION.description} Winner gets a bonus prize.</p>
           <input
             type="text"
-            inputMode="numeric"
             placeholder={BONUS_QUESTION.placeholder}
             value={form.bonus_answer ?? ""}
             onChange={(e) => setForm((f) => ({ ...f, bonus_answer: e.target.value.trim() }))}
