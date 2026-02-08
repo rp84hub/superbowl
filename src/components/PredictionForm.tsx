@@ -20,9 +20,11 @@ export function PredictionForm() {
     supabase
       .from("app_settings")
       .select("lock_submissions")
+      .eq("id", "default")
       .single()
       .then(({ data }) => {
-        if (data) setLockSubmissions(data.lock_submissions);
+        const row = data as { lock_submissions?: boolean } | null;
+        if (row?.lock_submissions) setLockSubmissions(true);
       });
   }, []);
 
