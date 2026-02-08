@@ -14,7 +14,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   try {
-    for (let q = 1; q <= 10; q++) {
+    for (let q = 1; q <= 11; q++) {
       const { error } = await supabaseAdmin
         .from("results")
         .update({ correct_answer: "", updated_at: new Date().toISOString() } as never)

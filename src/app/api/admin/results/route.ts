@@ -23,7 +23,7 @@ export async function PUT(request: Request) {
       question_number: number;
       correct_answer: string;
     };
-    if (!question_number || question_number < 1 || question_number > 10) {
+    if (!question_number || question_number < 1 || question_number > 11) {
       return NextResponse.json({ error: "Invalid question_number" }, { status: 400 });
     }
     if (typeof correct_answer !== "string") {

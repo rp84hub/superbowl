@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { TeamLogo } from "@/components/TeamLogo";
-import { QUESTIONS, TEAM_OPTIONS, TEAM_OPTIONS_WITH_TIE, QUESTION_IDS_WITH_TIE, OT_OPTIONS } from "@/lib/constants";
+import { QUESTIONS, TEAM_OPTIONS, TEAM_OPTIONS_WITH_TIE, QUESTION_IDS_WITH_TIE, OT_OPTIONS, BONUS_QUESTION } from "@/lib/constants";
 import { supabase } from "@/lib/supabase/client";
 import type { ResultsRow } from "@/types/database";
 
@@ -255,6 +255,37 @@ export default function AdminPage() {
             )}
           </div>
         ))}
+
+        <div className="rounded-xl border border-superbowl-gold/40 bg-superbowl-gold/5 p-4">
+          <p className="font-medium text-superbowl-gold mb-2">
+            Bonus — {BONUS_QUESTION.label}
+          </p>
+          <p className="text-xs text-white/60 mb-2">Seahawks score first, Patriots second (e.g. 24-21). Not part of main leaderboard.</p>
+          <div className="flex flex-wrap items-center gap-2">
+            <input
+              type="text"
+              placeholder={BONUS_QUESTION.placeholder}
+              value={results[11] ?? ""}
+              onChange={(e) => setResults((prev) => ({ ...prev, 11: e.target.value }))}
+              onBlur={(e) => {
+                const v = e.target.value.trim();
+                if (v && token) updateResult(11, v);
+              }}
+              className="rounded-lg bg-white/10 border border-white/20 px-4 py-2 text-white placeholder:text-white/40 focus:border-superbowl-gold focus:outline-none w-28"
+            />
+            <button
+              type="button"
+              onClick={() => token && updateResult(11, (results[11] ?? "").trim())}
+              disabled={saving === 11}
+              className="rounded-lg px-4 py-2 text-sm font-medium bg-superbowl-gold/20 text-superbowl-gold border border-superbowl-gold/50 hover:bg-superbowl-gold/30"
+            >
+              {saving === 11 ? "…" : "Save"}
+            </button>
+          </div>
+          {results[11] && (
+            <p className="mt-2 text-white/50 text-xs">Current: {results[11]}</p>
+          )}
+        </div>
       </div>
     </div>
   );

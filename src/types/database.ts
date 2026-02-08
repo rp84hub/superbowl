@@ -27,6 +27,7 @@ export interface Database {
           q8: string | null;
           q9: string | null;
           q10: string | null;
+          bonus_answer: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -43,6 +44,7 @@ export interface Database {
           q8?: string | null;
           q9?: string | null;
           q10?: string | null;
+          bonus_answer?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -59,6 +61,7 @@ export interface Database {
           q8?: string | null;
           q9?: string | null;
           q10?: string | null;
+          bonus_answer?: string | null;
           created_at?: string;
           updated_at?: string;
         };

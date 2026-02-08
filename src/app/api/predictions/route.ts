@@ -34,6 +34,7 @@ export async function POST(request: Request) {
       const val = answers[key];
       payload[key] = typeof val === "string" ? val : null;
     }
+    payload.bonus_answer = typeof answers.bonus_answer === "string" ? answers.bonus_answer.trim() || null : null;
 
     const { error } = await supabaseAdmin
       .from("predictions")

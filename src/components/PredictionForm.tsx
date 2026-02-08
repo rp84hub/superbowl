@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase/client";
 import { TeamLogo } from "./TeamLogo";
-import { GUEST_LIST, QUESTIONS, TEAM_OPTIONS, TEAM_OPTIONS_WITH_TIE, QUESTION_IDS_WITH_TIE, OT_OPTIONS } from "@/lib/constants";
+import { GUEST_LIST, QUESTIONS, TEAM_OPTIONS, TEAM_OPTIONS_WITH_TIE, QUESTION_IDS_WITH_TIE, OT_OPTIONS, BONUS_QUESTION } from "@/lib/constants";
 import type { PredictionRow } from "@/types/database";
 
 type FormState = Record<string, string>;
@@ -56,6 +56,8 @@ export function PredictionForm({ selectedGuest, onGuestChange }: PredictionFormP
             const val = (row as Record<string, unknown>)[key];
             if (typeof val === "string" && val) f[key] = val;
           }
+          const bonus = (row as Record<string, unknown>).bonus_answer;
+          if (typeof bonus === "string" && bonus) f.bonus_answer = bonus;
           setForm(f);
         } else {
           setForm({});
@@ -182,6 +184,21 @@ export function PredictionForm({ selectedGuest, onGuestChange }: PredictionFormP
             )}
           </fieldset>
         ))}
+
+        <fieldset className="rounded-lg border border-superbowl-gold/40 p-4 bg-superbowl-gold/5" disabled={!canEdit}>
+          <legend className="text-sm font-medium text-superbowl-gold mb-2">
+            {BONUS_QUESTION.label}
+          </legend>
+          <p className="text-xs text-white/70 mb-2">{BONUS_QUESTION.description} Winner gets a bonus prize.</p>
+          <input
+            type="text"
+            inputMode="numeric"
+            placeholder={BONUS_QUESTION.placeholder}
+            value={form.bonus_answer ?? ""}
+            onChange={(e) => setForm((f) => ({ ...f, bonus_answer: e.target.value.trim() }))}
+            className="w-full rounded-lg bg-white/10 border border-white/20 px-4 py-2.5 text-white placeholder:text-white/40 focus:border-superbowl-gold focus:outline-none focus:ring-1 focus:ring-superbowl-gold"
+          />
+        </fieldset>
 
         {message && (
           <p

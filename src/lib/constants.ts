@@ -45,3 +45,11 @@ export const OT_OPTIONS = ["Yes", "No"] as const;
 
 /** Question ids that allow Tie (3, 4, 5, 6, 7, 9) */
 export const QUESTION_IDS_WITH_TIE = [3, 4, 5, 6, 7, 9] as const;
+
+/** Bonus question: 4th quarter score, Seahawks–Patriots (e.g. 24-21). Not counted in leaderboard. */
+export const BONUS_QUESTION = {
+  id: 11,
+  label: "Bonus: End of 4th quarter score (Seahawks first, then Patriots)",
+  placeholder: "e.g. 24-21",
+  description: "Correct guess wins a bonus prize. Format: Seahawks score–Patriots score.",
+} as const;

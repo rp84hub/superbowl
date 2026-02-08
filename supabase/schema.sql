@@ -18,15 +18,15 @@ INSERT INTO app_settings (id, lock_submissions, updated_at)
 VALUES ('default', false, now())
 ON CONFLICT (id) DO NOTHING;
 
--- 2. Results (one row per question; admin updates these)
+-- 2. Results (one row per question + bonus; admin updates these)
 CREATE TABLE IF NOT EXISTS results (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  question_number INT NOT NULL UNIQUE CHECK (question_number >= 1 AND question_number <= 10),
+  question_number INT NOT NULL UNIQUE CHECK (question_number >= 1 AND question_number <= 11),
   correct_answer TEXT NOT NULL,
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
--- Insert 10 placeholder rows for questions 1-10
+-- Insert 10 question rows + 1 bonus row (11)
 INSERT INTO results (question_number, correct_answer, updated_at)
 VALUES
   (1, '', now()),
@@ -38,7 +38,8 @@ VALUES
   (7, '', now()),
   (8, '', now()),
   (9, '', now()),
-  (10, '', now())
+  (10, '', now()),
+  (11, '', now())
 ON CONFLICT (question_number) DO NOTHING;
 
 -- 3. Predictions (one row per guest)
@@ -55,6 +56,7 @@ CREATE TABLE IF NOT EXISTS predictions (
   q8 TEXT,
   q9 TEXT,
   q10 TEXT,
+  bonus_answer TEXT,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
