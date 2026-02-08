@@ -19,7 +19,8 @@ export async function GET(request: Request) {
     .eq("id", "default")
     .single();
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  return NextResponse.json({ lock_submissions: data?.lock_submissions ?? false });
+  const lock = (data as { lock_submissions: boolean } | null)?.lock_submissions ?? false;
+  return NextResponse.json({ lock_submissions: lock });
 }
 
 export async function PUT(request: Request) {
