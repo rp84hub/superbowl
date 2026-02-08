@@ -13,11 +13,18 @@ export default function HomePage() {
         <p className="text-white/70 text-sm md:text-base">
           Super Bowl LX • 2026 • Submit your picks before kickoff
         </p>
+        <p className="text-superbowl-gold text-sm font-medium mt-2">
+          Winner will be awarded a gift card.
+        </p>
       </section>
+
+      <PredictionForm />
 
       <Leaderboard />
 
-      <PredictionForm />
+      <footer className="text-center text-white/50 text-xs pt-6 border-t border-white/10 space-y-1">
+        <p>* If the winner is tied, they share the gift card.</p>
+      </footer>
     </div>
   );
 }

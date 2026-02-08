@@ -95,12 +95,14 @@ export function PredictionForm() {
           <select
             value={guestName}
             onChange={(e) => setGuestName(e.target.value)}
-            className="w-full rounded-lg bg-white/10 border border-white/20 px-4 py-2.5 text-white focus:border-seahawks-green focus:outline-none focus:ring-1 focus:ring-seahawks-green"
+            className="w-full rounded-lg bg-gray-800 border border-white/20 px-4 py-2.5 text-white focus:border-seahawks-green focus:outline-none focus:ring-1 focus:ring-seahawks-green [color-scheme:dark]"
             required
           >
-            <option value="">— Select your name —</option>
+            <option value="" className="bg-gray-800 text-white">
+              — Select your name —
+            </option>
             {GUEST_LIST.map((name) => (
-              <option key={name} value={name}>
+              <option key={name} value={name} className="bg-gray-800 text-white">
                 {name}
               </option>
             ))}

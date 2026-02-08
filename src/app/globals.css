@@ -19,6 +19,12 @@ body {
     radial-gradient(ellipse 60% 40% at 20% 50%, rgba(105, 190, 40, 0.15), transparent);
 }
 
+/* Dropdown: dark list so option text is visible */
+select option {
+  background-color: #1f2937;
+  color: #fff;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
