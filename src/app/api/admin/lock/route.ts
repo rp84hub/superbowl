@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase/server";
-import type { Database } from "@/types/database";
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? "superbowl2026";
 
@@ -32,13 +31,10 @@ export async function PUT(request: Request) {
     const body = await request.json();
     const lock = Boolean(body?.lock_submissions);
 
-    const payload: Database["public"]["Tables"]["app_settings"]["Update"] = {
-      lock_submissions: lock,
-      updated_at: new Date().toISOString(),
-    };
     const { error } = await supabaseAdmin
       .from("app_settings")
-      .update(payload)
+      // Supabase client types infer 'never' for this table; cast to satisfy TypeScript
+      .update({ lock_submissions: lock, updated_at: new Date().toISOString() } as never)
       .eq("id", "default");
 
     if (error) {
