@@ -97,6 +97,11 @@ export function PredictionForm({ selectedGuest, onGuestChange }: PredictionFormP
         <p className="text-sm text-white/70">
           {locked ? "Submissions are locked." : "Select your name and make your predictions."}
         </p>
+        {!locked && (
+          <p className="text-xs text-white/50 mt-0.5">
+            Each question is worth different points (shown next to each question).
+          </p>
+        )}
       </div>
       <form onSubmit={handleSubmit} className="p-4 space-y-6">
         <div>
