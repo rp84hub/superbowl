@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase/client";
 import { TeamLogo } from "./TeamLogo";
-import { GUEST_LIST, QUESTIONS, TEAM_OPTIONS, OT_OPTIONS } from "@/lib/constants";
+import { GUEST_LIST, QUESTIONS, TEAM_OPTIONS, TEAM_OPTIONS_WITH_TIE, QUESTION_IDS_WITH_TIE, OT_OPTIONS } from "@/lib/constants";
 import type { PredictionRow } from "@/types/database";
 
 type FormState = Record<string, string>;
@@ -150,7 +150,10 @@ export function PredictionForm({ selectedGuest, onGuestChange }: PredictionFormP
               </div>
             ) : (
               <div className="flex flex-wrap gap-3">
-                {TEAM_OPTIONS.map((opt) => (
+                {(QUESTION_IDS_WITH_TIE.includes(q.id as (typeof QUESTION_IDS_WITH_TIE)[number])
+                  ? TEAM_OPTIONS_WITH_TIE
+                  : TEAM_OPTIONS
+                ).map((opt) => (
                   <label
                     key={opt}
                     className={`flex items-center gap-2 cursor-pointer rounded-lg border-2 px-4 py-2 transition ${

@@ -37,5 +37,11 @@ export const QUESTIONS = [
 
 export const POINTS = [1, 2, 2, 2, 4, 2, 2, 3, 4, 5] as const;
 
-export const TEAM_OPTIONS = ["Seahawks", "Patriots", "Tie/None"] as const;
+/** Team-only questions (1, 2, 10): no Tie option */
+export const TEAM_OPTIONS = ["Seahawks", "Patriots"] as const;
+/** Quarter/halftime/td questions (3, 4, 5, 6, 7, 9): include Tie */
+export const TEAM_OPTIONS_WITH_TIE = ["Seahawks", "Patriots", "Tie"] as const;
 export const OT_OPTIONS = ["Yes", "No"] as const;
+
+/** Question ids that allow Tie (3, 4, 5, 6, 7, 9) */
+export const QUESTION_IDS_WITH_TIE = [3, 4, 5, 6, 7, 9] as const;

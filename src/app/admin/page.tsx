@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { TeamLogo } from "@/components/TeamLogo";
-import { QUESTIONS, TEAM_OPTIONS, OT_OPTIONS } from "@/lib/constants";
+import { QUESTIONS, TEAM_OPTIONS, TEAM_OPTIONS_WITH_TIE, QUESTION_IDS_WITH_TIE, OT_OPTIONS } from "@/lib/constants";
 import { supabase } from "@/lib/supabase/client";
 import type { ResultsRow } from "@/types/database";
 
@@ -16,7 +16,7 @@ export default function AdminPage() {
   const [results, setResults] = useState<Record<number, string>>({});
   const [lockSubmissions, setLockSubmissions] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState<number | "lock" | null>(null);
+  const [saving, setSaving] = useState<number | "lock" | "reset" | null>(null);
 
   const token = typeof window !== "undefined" ? sessionStorage.getItem("admin_token") : null;
 
@@ -111,6 +111,23 @@ export default function AdminPage() {
       .finally(() => setSaving(null));
   }
 
+  function resetResults() {
+    if (!token) return;
+    if (!confirm("Clear all 10 correct answers? Leaderboard will show zeros until you set results again.")) return;
+    setSaving("reset");
+    fetch("/api/admin/reset-results", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((r) => {
+        if (r.ok) {
+          setResults({});
+          fetchResults(token);
+        }
+      })
+      .finally(() => setSaving(null));
+  }
+
   if (!authed) {
     return (
       <div className="max-w-sm mx-auto mt-12">
@@ -155,6 +172,13 @@ export default function AdminPage() {
             className="text-sm text-white/70 hover:text-white"
           >
             ← Back to app
+          </button>
+          <button
+            onClick={resetResults}
+            disabled={saving === "reset"}
+            className="rounded-lg px-4 py-2 font-medium text-sm bg-white/10 text-white hover:bg-white/20 disabled:opacity-50"
+          >
+            {saving === "reset" ? "…" : "Reset all results"}
           </button>
           <button
             onClick={toggleLock}
@@ -202,7 +226,10 @@ export default function AdminPage() {
               </div>
             ) : (
               <div className="flex flex-wrap gap-2">
-                {TEAM_OPTIONS.map((opt) => (
+                {(QUESTION_IDS_WITH_TIE.includes(q.id as (typeof QUESTION_IDS_WITH_TIE)[number])
+                  ? TEAM_OPTIONS_WITH_TIE
+                  : TEAM_OPTIONS
+                ).map((opt) => (
                   <button
                     key={opt}
                     onClick={() => updateResult(q.id, opt)}
