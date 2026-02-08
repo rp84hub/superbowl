@@ -32,7 +32,7 @@ export async function PUT(request: Request) {
 
     const { error } = await supabaseAdmin
       .from("results")
-      .update({ correct_answer: correct_answer.trim(), updated_at: new Date().toISOString() })
+      .update({ correct_answer: correct_answer.trim(), updated_at: new Date().toISOString() } as never)
       .eq("question_number", question_number);
 
     if (error) {

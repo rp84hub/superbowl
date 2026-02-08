@@ -14,13 +14,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid guest name" }, { status: 400 });
     }
 
-    const { data: settings } = await supabaseAdmin
+    const { data: settingsData } = await supabaseAdmin
       .from("app_settings")
       .select("lock_submissions")
       .eq("id", "default")
       .single();
 
-    if (settings?.lock_submissions) {
+    const locked = (settingsData as { lock_submissions?: boolean } | null)?.lock_submissions;
+    if (locked) {
       return NextResponse.json({ error: "Submissions are locked." }, { status: 403 });
     }
 
@@ -34,9 +35,9 @@ export async function POST(request: Request) {
       payload[key] = typeof val === "string" ? val : null;
     }
 
-    const { error } = await supabaseAdmin.from("predictions").upsert(payload, {
-      onConflict: "guest_name",
-    });
+    const { error } = await supabaseAdmin
+      .from("predictions")
+      .upsert(payload as never, { onConflict: "guest_name" });
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
