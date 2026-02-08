@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --seahawks-navy: #002244;
+  --seahawks-green: #69BE28;
+  --patriots-navy: #0D2240;
+  --patriots-red: #C60C30;
+  --patriots-silver: #B0B7BC;
+  --superbowl-dark: #0a0e17;
+  --superbowl-gold: #C5B358;
+}
+
+body {
+  @apply bg-superbowl-dark text-white antialiased;
+  background-image: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 34, 68, 0.5), transparent),
+    radial-gradient(ellipse 60% 40% at 80% 50%, rgba(201, 12, 48, 0.15), transparent),
+    radial-gradient(ellipse 60% 40% at 20% 50%, rgba(105, 190, 40, 0.15), transparent);
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
