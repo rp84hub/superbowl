@@ -45,6 +45,29 @@ export function computeLeaderboard(
     return { guest_name, total_points: total, questions_correct: correct };
   });
 
-  entries.sort((a, b) => b.total_points - a.total_points);
+  entries.sort(
+    (a, b) => b.total_points - a.total_points || a.guest_name.localeCompare(b.guest_name)
+  );
   return entries;
+}
+
+/** Points earned per question (1–10); 0 if wrong or unanswered. */
+export function getPointsPerQuestion(
+  prediction: PredictionRow | null,
+  resultsByQ: Record<number, string>
+): number[] {
+  const out: number[] = [];
+  for (let q = 1; q <= 10; q++) {
+    const key = `q${q}` as keyof PredictionRow;
+    const userAnswer = prediction?.[key];
+    const correctAnswer = resultsByQ[q];
+    if (typeof userAnswer !== "string" || !correctAnswer) {
+      out.push(0);
+      continue;
+    }
+    const match =
+      (userAnswer as string).trim() === (correctAnswer as string).trim();
+    out.push(match ? POINTS[q - 1] : 0);
+  }
+  return out;
 }

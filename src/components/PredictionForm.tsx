@@ -8,8 +8,15 @@ import type { PredictionRow } from "@/types/database";
 
 type FormState = Record<string, string>;
 
-export function PredictionForm() {
-  const [guestName, setGuestName] = useState("");
+interface PredictionFormProps {
+  selectedGuest?: string;
+  onGuestChange?: (name: string) => void;
+}
+
+export function PredictionForm({ selectedGuest, onGuestChange }: PredictionFormProps = {}) {
+  const [internalGuest, setInternalGuest] = useState("");
+  const guestName = onGuestChange && selectedGuest !== undefined ? selectedGuest : internalGuest;
+  const setGuestName = onGuestChange && selectedGuest !== undefined ? onGuestChange : setInternalGuest;
   const [form, setForm] = useState<FormState>({});
   const [lockSubmissions, setLockSubmissions] = useState(false);
   const [existing, setExisting] = useState<PredictionRow | null>(null);
